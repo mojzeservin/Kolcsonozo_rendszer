@@ -1,1 +1,12 @@
-/**/
+header{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+footer{
+    font-size: 15px;
+}
+
+header, footer{
+    text-align: center;
+}

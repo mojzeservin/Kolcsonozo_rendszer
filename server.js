@@ -9,6 +9,7 @@ app.use(express.urlencoded({extended: true}));
 app.use('/assets', express.static('assets'));
 app.use(session({ secret: process.env.SESSION_SECRET}));
 
+app.use("/", require("./routes/main"));
 app.use("/items", require("./routes/itemRoutes"));
 app.use("/rentals", require("./routes/rentalRoutes"));
 app.use("/users", require("./routes/userRoutes"));
