@@ -1,5 +1,6 @@
 const express = require("express");
 const ejs = require("ejs");
+const db = require("./database")
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -29,16 +30,31 @@ router.get("/reg", (req, res) => {
 });
 
 router.get("/items", (req, res) => {
-    ejs.renderFile("./views/items.ejs", {session: req.session}, (err, html) => {
-        if (err)
-        {
-            console.log(err);
-            return;
+
+    db.query(`SELECT * FROM items`,(err, results) =>{
+        if (err) {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            return
         }
 
-        req.session.msg = "";
-        res.send(html);
-    })
+        let total = 0
+        results.forEach(item => {
+            total++;
+        });
+
+        ejs.renderFile("./views/items.ejs", {session: req.session, results, total}, (err, html) => {
+            if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
+    
+        })
+    });
 })
 
 router.get('/logout', (req, res)=>{
