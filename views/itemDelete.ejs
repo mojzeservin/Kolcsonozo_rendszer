@@ -1,0 +1,13 @@
+<%- include('header.ejs') %>
+
+<%- include('message') %>
+
+<h4>Delete item</h4>
+
+<form action="/items/itemDelete/<%= id %>" method="post">
+    <p>Are you sure you want to delete?</p>
+    <input type="submit" class="btn btn-danger" value="Törlés">
+    <a href="/items" class="btn btn-secondary">Back...</a>
+</form>
+
+<%- include('footer') %>

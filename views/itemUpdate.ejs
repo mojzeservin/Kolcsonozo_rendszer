@@ -1,0 +1,21 @@
+<%- include("header.ejs") %>&nbsp;
+
+<%- include('message') %>
+
+<form action="/items/itemUpdate/<%= id %>" method="post">
+    <div class="mb-3">
+      <label for="Title" class="form-label">Title</label>
+      <input type="text" class="form-control" name="title">
+    </div>
+
+    <select class="form-select mb-3" aria-label="Default select example" name="type">
+        <option selected disabled>Choose a type</option>
+        <option value="film">film</option>
+        <option value="könyv">könyv</option>
+      </select>
+
+    <button type="submit" value="upload" name="uploadBtn" class="btn btn-primary">Upload</button>
+    <a href="/items" class="btn btn-secondary">Back...</a>
+  </form>
+
+<%- include("footer.ejs") %>

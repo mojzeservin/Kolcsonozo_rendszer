@@ -57,6 +57,22 @@ router.get("/items", (req, res) => {
     });
 })
 
+router.get('/itemDelete/:id', (req, res) => {
+    let id = req.params.id;
+
+    ejs.renderFile('./views/itemDelete.ejs', {session: req.session, id}, (err, html)=>{
+        res.send(html);
+    })
+});
+
+router.get('/itemUpdate/:id', (req, res) => {
+    let id = req.params.id;
+
+    ejs.renderFile('./views/itemUpdate.ejs', {session: req.session, id}, (err, html)=>{
+        res.send(html);
+    })
+});
+
 router.get('/logout', (req, res)=>{
  
     req.session.isLoggedIn = false;
