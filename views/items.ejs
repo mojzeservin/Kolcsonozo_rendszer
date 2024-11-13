@@ -42,7 +42,8 @@
         </tr>
     </thead>
     <tbody>
-        <% results.forEach((item, index) => { %>
+        <% results.forEach((item, index) => { 
+          if(item.available == 1) {%>
             <tr>    
                 <td><%= (index+1) %>.</td>
                 <td><%= item.title %></td>
@@ -56,6 +57,7 @@
                     <% }%>
                 </td>
             </tr>
+          <% } %>
 
         <% }); %>
     </tbody>

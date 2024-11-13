@@ -74,17 +74,28 @@ router.get('/itemDelete/:id', (req, res) => {
 
 router.get('/itemUpdate/:id', (req, res) => {
     let id = req.params.id;
-
-    ejs.renderFile('./views/itemUpdate.ejs', {session: req.session, id}, (err, html)=>{
-        if (err)
-            {
-                console.log(err);
-                return;
-            }
     
-            req.session.msg = "";
-            res.send(html);
-    })
+    db.query(`SELECT title, type FROM items WHERE id = '${id}'`, (err, results)=>{
+        if (err)
+        {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            res.redirect('/');
+            return;
+        }
+
+        ejs.renderFile('./views/itemUpdate.ejs', {session: req.session, id, results}, (err, html)=>{
+            if (err)
+                {
+                    console.log(err);
+                    return;
+                }
+        
+                req.session.msg = "";
+                res.send(html);
+        });
+        
+    });
 });
 
 router.get('/users', (req, res) => {
@@ -132,16 +143,26 @@ router.get('/userDelete/:id', (req, res) => {
 router.get('/userUpdate/:id', (req, res) => {
     let id = req.params.id;
 
-    ejs.renderFile('./views/userUpdate.ejs', {session: req.session, id}, (err, html)=>{
+    db.query(`SELECT name, role FROM users WHERE id = '${id}'`, (err, results)=>{
         if (err)
-            {
-                console.log(err);
-                return;
-            }
-    
-            req.session.msg = "";
-            res.send(html);
-    })
+        {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            res.redirect('/');
+            return;
+        }
+        
+        ejs.renderFile('./views/userUpdate.ejs', {session: req.session, id, results}, (err, html)=>{
+            if (err)
+                {
+                    console.log(err);
+                    return;
+                }
+        
+                req.session.msg = "";
+                res.send(html);
+        })
+    });
 });
 
 router.get('/logout', (req, res)=>{
