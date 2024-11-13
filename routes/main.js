@@ -144,6 +144,47 @@ router.get('/userUpdate/:id', (req, res) => {
     })
 });
 
+router.get("/rentals", (req, res) => {
+    db.query(`SELECT rentals.id, users.name, items.title FROM rentals, items, users WHERE items.id = rentals.itemID AND rentals.userID = users.id`, (err, results) =>{
+        if (err) {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            return
+        }
+
+        let total = 0
+        results.forEach(item => {
+            total++;
+        });
+
+        ejs.renderFile("./views/rentals.ejs", {session: req.session, results, total}, (err, html) => {
+            if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
+        })
+    });
+})
+
+router.get('/rentalDelete/:id', (req, res) => {
+    let id = req.params.id;
+
+    ejs.renderFile('./views/rentalDelete.ejs', {session: req.session, id}, (err, html)=>{
+        if (err)
+        {
+            console.log(err);
+            return;
+        }
+    
+        req.session.msg = "";
+        res.send(html);
+    })
+});
+
 router.get('/logout', (req, res)=>{
  
     req.session.isLoggedIn = false;
