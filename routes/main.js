@@ -61,7 +61,14 @@ router.get('/itemDelete/:id', (req, res) => {
     let id = req.params.id;
 
     ejs.renderFile('./views/itemDelete.ejs', {session: req.session, id}, (err, html)=>{
-        res.send(html);
+        if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
     })
 });
 
@@ -69,7 +76,71 @@ router.get('/itemUpdate/:id', (req, res) => {
     let id = req.params.id;
 
     ejs.renderFile('./views/itemUpdate.ejs', {session: req.session, id}, (err, html)=>{
-        res.send(html);
+        if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
+    })
+});
+
+router.get('/users', (req, res) => {
+    db.query(`SELECT * FROM users`, (err, results)=>{
+        if (err)
+        {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            res.redirect('/');
+            return;
+        }
+
+        let total = 0
+        results.forEach(item => {
+            total++;
+        });
+        ejs.renderFile('./views/users.ejs', {session: req.session, results, total}, (err, html)=>{
+            if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
+        })
+    });
+});
+
+router.get('/userDelete/:id', (req, res) => {
+    let id = req.params.id;
+
+    ejs.renderFile('./views/userDelete.ejs', {session: req.session, id}, (err, html)=>{
+        if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
+    })
+});
+
+router.get('/userUpdate/:id', (req, res) => {
+    let id = req.params.id;
+
+    ejs.renderFile('./views/userUpdate.ejs', {session: req.session, id}, (err, html)=>{
+        if (err)
+            {
+                console.log(err);
+                return;
+            }
+    
+            req.session.msg = "";
+            res.send(html);
     })
 });
 

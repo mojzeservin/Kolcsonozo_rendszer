@@ -95,4 +95,62 @@ router.post('/login', (req, res)=>{
     });
 });
 
+router.post('/userDelete/:id', (req, res)=>{
+    
+    if (!req.params.id) {
+        req.session.msg = 'Missing ID!';
+        req.session.severity = 'danger';
+        res.redirect('/users');
+        return;
+    }
+
+    db.query(`DELETE FROM users WHERE id = '${req.params.id}'`,(err, results)=>{
+        if (err)
+        {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            res.redirect('/users');
+            return
+        }
+        req.session.msg = 'User deleted!';
+        req.session.severity = 'success';
+        res.redirect('/users');
+        return;
+    });
+});
+
+router.post('/userUpdate/:id', (req, res)=>{
+
+    let {name, role} = req.body;
+
+    if(!name || !role)
+    {
+        req.session.msg = 'Missing data!';
+        req.session.severity = 'danger';
+        res.redirect('/users');
+        return
+    }    
+
+    if (!req.params.id) {
+        req.session.msg = 'Missing ID!';
+        req.session.severity = 'danger';
+        res.redirect('/users');
+        return;
+    }
+
+    db.query(`UPDATE users SET name = ?, role = ? WHERE id = '${req.params.id}'`, [name, role], (err, results)=>{
+        if (err)
+        {
+            req.session.msg = 'Database error!';
+            req.session.severity = 'danger';
+            res.redirect('/users');
+            return
+        }
+        req.session.msg = 'User updated!';
+        req.session.severity = 'success';
+        res.redirect('/users');
+        return;
+    });
+});
+
 module.exports = router
