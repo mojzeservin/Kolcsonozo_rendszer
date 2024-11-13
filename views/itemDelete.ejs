@@ -2,9 +2,9 @@
 
 <%- include('message') %>
 
-<h4>Delete item</h4>
+<h4 class="text-center mt-3">Delete item</h4>
 
-<form action="/items/itemDelete/<%= id %>" method="post">
+<form action="/items/itemDelete/<%= id %>" method="post" class="text-center mb-3">
     <p>Are you sure you want to delete?</p>
     <input type="submit" class="btn btn-danger" value="Törlés">
     <a href="/items" class="btn btn-secondary">Back...</a>

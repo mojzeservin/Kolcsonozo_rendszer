@@ -70,7 +70,7 @@ router.post('/itemUpdate/:id', (req, res)=>{
         return;
     }
 
-    db.query(`UPDATE items SET title = ?, type = ? WHERE id = ${req.params.id}`,[title, type],(err, results)=>{
+    db.query(`UPDATE items SET title = ?, type = ? WHERE id = '${req.params.id}'`, [title, type], (err, results)=>{
         if (err)
         {
             req.session.msg = 'Database error!';
@@ -78,7 +78,7 @@ router.post('/itemUpdate/:id', (req, res)=>{
             res.redirect('/items');
             return
         }
-        req.session.msg = 'Item deleted!';
+        req.session.msg = 'Item updated!';
         req.session.severity = 'success';
         res.redirect('/items');
         return;
