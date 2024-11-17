@@ -18,10 +18,10 @@
                 <td><%= item.name %></td>
                 <td class="text-center"><%= item.role %></td>
                 <td class="text-end">                    
-                    <%if(session.isLoggedIn==true && session.userRole=="admin") {%>
+                    <% if (session.isLoggedIn == true && session.userRole == "admin" && session.userID != item.id) { %>
                     <a href="./userDelete/<%= item.id %>" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
                     <a href="./userUpdate/<%= item.id %>" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-                    <% }%>
+                    <% } %>
                 </td>
             </tr>
 

@@ -10,19 +10,40 @@ router.post('/rentalDelete/:id', (req, res)=>{
         return;
     }
 
-    db.query(`DELETE FROM rentals WHERE id = '${req.params.id}'`,(err, results)=>{
+    
+    db.query(`SELECT itemID FROM rentals WHERE id = '${req.params.id}'`, (err, results) => {
         if (err)
         {
             req.session.msg = 'Database error!';
             req.session.severity = 'danger';
-            res.redirect('/users');
-            return
+            res.redirect('/rentals');
+            return;
         }
-        
-        req.session.msg = 'Rent deleted!';
-        req.session.severity = 'success';
-        res.redirect('/rentals');
-        return;
+
+        db.query(`UPDATE items SET available = '1' WHERE id = '${results[0].itemID}'`, (subErr1, subResults1) => {
+            if (subErr1)
+            {
+                req.session.msg = 'Database error!';
+                req.session.severity = 'danger';
+                res.redirect('/rentals');
+                return;
+            }
+        });
+
+        db.query(`DELETE FROM rentals WHERE id = '${req.params.id}'`,(subErr2, subResults2) => {
+            if (subErr2)
+            {
+                req.session.msg = 'Database error!';
+                req.session.severity = 'danger';
+                res.redirect('/rentals');
+                return;
+            }
+            
+            req.session.msg = 'Item returned!';
+            req.session.severity = 'success';
+            res.redirect('/rentals');
+            return;
+        });
     });
 });
 

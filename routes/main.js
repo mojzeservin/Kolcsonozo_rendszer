@@ -166,19 +166,26 @@ router.get('/userUpdate/:id', (req, res) => {
 });
 
 router.get("/rentals", (req, res) => {
-    db.query(`SELECT rentals.id, users.name, items.title FROM rentals, items, users WHERE items.id = rentals.itemID AND rentals.userID = users.id`, (err, results) =>{
+    db.query(`SELECT rentals.id, rentals.userID, users.name, items.title FROM rentals, items, users WHERE items.id = rentals.itemID AND rentals.userID = users.id`, (err, results) =>{
         if (err) {
             req.session.msg = 'Database error!';
             req.session.severity = 'danger';
             return
         }
 
-        let total = 0
+        let total = 0;
+        let userTotal = 0;
+
         results.forEach(item => {
             total++;
+
+            if (item.userID == req.session.userID)
+            {
+                userTotal++
+            }
         });
 
-        ejs.renderFile("./views/rentals.ejs", {session: req.session, results, total}, (err, html) => {
+        ejs.renderFile("./views/rentals.ejs", {session: req.session, results, total, userTotal}, (err, html) => {
             if (err)
             {
                 console.log(err);

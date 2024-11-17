@@ -6,29 +6,60 @@
     <thead>
         <tr>
             <th>#</th>
+
+            <% if(session.isLoggedIn == true && session.userRole == "admin") { %>
             <th>User's name</th>
             <th class="text-center">Item</th>
             <th></th>
+            <% } %>
+
+            <% if(session.isLoggedIn == true && session.userRole == "user") { %>
+            <th>Title</th>
+            <th class="text-end"></th>
+            <% } %>
+
         </tr>
     </thead>
     <tbody>
-        <% results.forEach((item, index) => { %>
-            <tr>    
-                <td><%= (index+1) %>.</td>
-                <td><%= item.name %></td>
-                <td class="text-center"><%= item.title %></td>
-                <td class="text-end">                    
-                    <%if(session.isLoggedIn==true && session.userRole=="admin") {%>
-                        <a href="./rentalDelete/<%= item.id %>" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
-                    <% }%>
-                </td>
-            </tr>
+        <% if(session.isLoggedIn == true) { %>
+            <% if (session.userRole == "admin") { %>
+                <% results.forEach((item, index) => { %>
+                <tr>
+                    <td><%= (index+1) %>.</td>
+                    <td><%= item.name %></td>
+                    <td class="text-center"><%= item.title %></td>
+                    <td class="text-end">                    
+                        <a href="./rentalDelete/<%= item.id %>" class="btn btn-primary">Return</a>
+                    </td>
+                </tr>
+                <% }); %>
+            <% } %>
 
-        <% }); %>
+            <% if (session.userRole == "user") { %>
+                <% results.forEach((item, index) => { %>
+                    <% if (item.userID == session.userID) { %>
+                        <tr>    
+                            <td><%= (index+1) %>.</td>
+                            <td><%= item.title %></td>
+                            <td class="text-end">
+                                <a href="./rentalDelete/<%= item.id %>" class="btn btn-primary">Return</a>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% }); %>
+            <% } %>
+        <% } %>
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="5" class="text-center">Total: <%= total %> borrowed items</td>
+            <td colspan="5" class="text-center">Total: 
+                <% if(session.isLoggedIn == true && session.userRole == "admin") { %>
+                <%= total %> 
+                <% } else if (session.isLoggedIn == true && session.userRole == "user") { %>
+                    <%= userTotal %>
+                <% } %>
+                borrowed items
+            </td>
         </tr>
     </tfoot>
 </table>
